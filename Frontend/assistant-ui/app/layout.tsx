@@ -26,10 +26,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${inter.variable} h-full antialiased`}>
       <head>
-        {/* TODO(security): Add a strict CSP header via Next.js headers config in production */}
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta httpEquiv="X-Content-Type-Options" content="nosniff" />
-        <meta httpEquiv="X-Frame-Options" content="DENY" />
       </head>
       <body className="h-full">{children}</body>
     </html>

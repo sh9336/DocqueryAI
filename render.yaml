@@ -15,6 +15,6 @@ services:
       - key: ENV
         value: production
       - key: ALLOWED_ORIGINS
-        sync: false
+        value: https://assistant-ui-sand.vercel.app
       - key: DEBUG_TOKEN
         sync: false
