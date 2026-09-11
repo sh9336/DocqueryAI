@@ -40,6 +40,15 @@ func limitsJSON(l session.Limits) gin.H {
 // CreateSession acquires a new lease, subject to the global and per-IP
 // concurrency caps, and sets the session cookie.
 func CreateSession(c *gin.Context) {
+	// Reuse an active lease when the browser reconnects. This prevents refreshes
+	// and transient retries from consuming another per-IP session slot.
+	if id, err := c.Cookie(middleware.SessionCookieName); err == nil && id != "" {
+		if _, ok := sessionMgr.Get(id); ok {
+			c.JSON(http.StatusOK, limitsJSON(sessionMgr.Limits()))
+			return
+		}
+	}
+
 	sess, err := sessionMgr.Create(c.ClientIP())
 	if err != nil {
 		switch err {
