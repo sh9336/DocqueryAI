@@ -1,0 +1,16 @@
+.git
+.gitignore
+.env
+.env.local
+.DS_Store
+*.swp
+*.swo
+*~
+node_modules
+vendor
+*.log
+__pycache__
+.vscode
+.idea
+*.iml
+uploads/

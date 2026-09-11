@@ -1,0 +1,51 @@
+services:
+  postgres:
+    image: ankane/pgvector:latest
+    container_name: rag-postgres
+    environment:
+      POSTGRES_DB: rag_scheduler
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      PGDATA: /var/lib/postgresql/data/pgdata
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./migrations/schema.sql:/docker-entrypoint-initdb.d/schema.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d rag_scheduler"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - rag-network
+ 
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: rag-backend
+    environment:
+      COHERE_API_KEY: ${COHERE_API_KEY}
+      DATABASE_URL: postgres://postgres:postgres@postgres:5432/rag_scheduler?sslmode=disable
+      PORT: 8080
+      ENV: ${ENV:-development}
+      ALLOWED_ORIGINS: ${ALLOWED_ORIGINS:-http://localhost:3000}
+      DEBUG_TOKEN: ${DEBUG_TOKEN:-}
+    ports:
+      - "${PORT:-8080}:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - ./uploads:/app/uploads
+    networks:
+      - rag-network
+    restart: unless-stopped
+ 
+volumes:
+  postgres_data:
+ 
+networks:
+  rag-network:
+    driver: bridge
