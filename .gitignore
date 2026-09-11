@@ -11,7 +11,7 @@ Thumbs.db
 vendor/
 *.log
 uploads/
-server
+/server
 dist/
 build/
 debug
