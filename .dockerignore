@@ -1,4 +1,10 @@
 .git
+.env
+.env.*
+Frontend/assistant-ui/node_modules
+Frontend/assistant-ui/.next
+uploads
+*.log
 .gitignore
 .env
 .env.local

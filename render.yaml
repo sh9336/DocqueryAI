@@ -1,0 +1,20 @@
+services:
+  - type: web
+    name: docquery-backend
+    env: docker
+    plan: free
+    rootDir: .
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    healthCheckPath: /health
+    envVars:
+      - key: COHERE_API_KEY
+        sync: false
+      - key: DATABASE_URL
+        sync: false
+      - key: ENV
+        value: production
+      - key: ALLOWED_ORIGINS
+        sync: false
+      - key: DEBUG_TOKEN
+        sync: false

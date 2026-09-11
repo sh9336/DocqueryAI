@@ -15,4 +15,5 @@ server
 dist/
 build/
 debug
-Frontend/
+Frontend/assistant-ui/node_modules/
+Frontend/assistant-ui/.next/
